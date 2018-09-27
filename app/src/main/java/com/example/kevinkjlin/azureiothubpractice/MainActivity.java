@@ -3,6 +3,7 @@ package com.example.kevinkjlin.azureiothubpractice;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
@@ -28,12 +29,13 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MainActivity extends AppCompatActivity {
+    public static final String TAG = "MainActivity";
 
     private enum LIGHTS{ ON, OFF, DISABLED };
     private enum CAMERA{ DETECTED_BURGLAR, SAFELY_WORKING };
     private static final int MAX_EVENTS_TO_REPORT = 5;
 
-    private final String connString = "Your connection String";
+    private final String connString = "HostName=MQTT-service.azure-devices.net;DeviceId=Kevin_Device;SharedAccessSignature=SharedAccessSignature sr=MQTT-service.azure-devices.net%2Fdevices%2FKevin_Device&sig=dK7rKqOxHvN6N8meoOnm8JAo3WXNuiLp3%2B0S7mcnZ1g%3D&se=1538620803";
     private final String deviceId = " ";
 
     private double temperature;
@@ -59,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
             InitClient();
         } catch (Exception e2)
         {
-            System.out.println("Exception while opening IoTHub connection: " + e2.toString());
+            Log.e(TAG, "onCreate: Exception while opening IoTHub connection: " + e2.toString());
 
         }
     }
@@ -188,13 +190,13 @@ public class MainActivity extends AppCompatActivity {
 
             client.subscribeToTwinDesiredProperties(desiredProperties);
 
-            System.out.println("Subscribe to Desired properties on device Twin...");
+            Log.e(TAG, "Subscribe to Desired properties on device Twin...");
         }
         catch (Exception e2)
         {
-            System.err.println("Exception while opening IoTHub connection: " + e2.getMessage());
+            Log.e(TAG, "Exception while opening IoTHub connection: " + e2.getMessage());
             client.closeNow();
-            System.out.println("Shutting down...");
+            Log.e(TAG, "Shutting down...");
         }
     }
 
